@@ -1,49 +1,68 @@
-E:\Web-Projects\React_Apps\todo-React_App\React_Apps\todo-appimport React from 'react';
+import React, { Component } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-import TodoInput from './components/todo-input.component/todo-input.component';
-import TodoList from './components/todo-list.component/todo-list.component';
-
-
-
-class App extends Component 
-{
+import "bootstrap/dist/css/bootstrap.min.css";
+import TodoInput from "./components/TodoInput";
+import TodoList from "./components/TodoList";
+// showing vs-code github setup
+class App extends Component {
   state = {
-    items: [{ id: 1, title: 'wake up'}, {id:2, title: 'make breakfast'}],
+    items: [{ id: 1, title: "wake up" }, { id: 2, title: "make breakfast" }],
     id: uuidv4(),
-    item: '',
+    item: "",
     editItem: false
   };
+  handleChange = e => {
+    this.setState({
+      item: e.target.value
+    });
+  };
+  handleSubmit = e => {
+    e.preventDefault();
+    const newItem = {
+      id: this.state.id,
+      title: this.state.item
+    }
+    const updateItems = [...this.state.items, newItem]
 
-  handleChange = (e) =>;
-  handleSubmit = (e) =>;
-  clearList = (e) =>;
-  handleDelete =  (e) =>;
-  handleEdit =  (e) =>;
-
-  return (
-    <div className="container">
-      <div className='row'>
-        <div className='col-10 mx-auto col-md-8 mt-5'>
-        <h3 className='text-center text-capitalize'>todo input</h3>
-      <TodoInput 
-      item={this.state.item} 
-      handleChange={this.handleChange} 
-      handleSubmit={this.handleSubmit}
-      editItem={this.editItem}
-      />
-        <TodoList 
-        item={this.state.item} 
-        clearList={this.clearList}
-        handleDelete={this.handleDelete}
-        handleEdit={this.handleEdit}
-        />
-
+    this.setState({
+      items: updateItems,
+      item:'',
+      id:uuidv4(),
+      editItem:false
+    });
+  };
+  clearList = () => {
+    console.log("clear list ");
+  };
+  handleDelete = id => {
+    console.log(`handle edit ${id}`);
+  };
+  handleEdit = id => {
+    console.log(`edit edit ${id}`);
+  };
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+          <div className="col-10 mx-auto col-md-8 mt-5">
+            <h3 className="text-capitalize text-center">todo input</h3>
+            <TodoInput
+              item={this.state.item}
+              handleChange={this.handleChange}
+              handleSubmit={this.handleSubmit}
+              editItem={this.state.editItem}
+            />
+            <TodoList
+              items={this.state.items}
+              clearList={this.clearList}
+              handleDelete={this.handleDelete}
+              handleEdit={this.handleEdit}
+            />
+          </div>
         </div>
       </div>
-     
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
